@@ -6,7 +6,6 @@ const ProjectHome = () => {
   const [home, setHome] = useState([]);
   const [company, setCompany] = useState();
   const homRef = useRef([]);
-  const arr = [];
 
   const text = "Home";
 
@@ -172,14 +171,12 @@ const ProjectHome = () => {
         </thead>
         <tbody>
           {home &&
-              home.map((home, key) => (
+            home.filter(
+              (arr, index, callback) =>
+                index === callback.findIndex((home) => home.pjtNo === arr.pjtNo)
+              )
+            .map((home, key) => (
               <tr key={home.rowNum}>
-                {/* { let i = 0;
-                  arr[i] = home.pjtNo;
-                  arr[i-1] === home.pjtNo ? "" : <td class="table_id" align="left">[{home.pjtNo.replace(/(\d{6})(\d{3})/, "$1-$2")}] {home.pjtNm}</td>
-                  i++;
-                } */}
-
                 <td class="table_id" align="left">[{home.pjtNo.replace(/(\d{6})(\d{3})/, "$1-$2")}] {home.pjtNm}</td>
                 <td>({home.totMm} M/M) / {home.totAmt.toLocaleString("ko-KR")}</td>
                 <td>{home.startDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')}</td>
@@ -189,6 +186,9 @@ const ProjectHome = () => {
                 <td>{home.contractMm}</td>
                 <td>{home.assignGrade !== null ? home.assignGrade.substr(1) : ""}</td>
                 <td>{home.assignMm}</td>
+                {/* <td>{home.signGrade !== null ? home.signGrade.substr(1) : ""}</td> */}
+                {/* <td>{home.signMm}</td> */}
+
                 {home.assignGrade !== home.signGrade ?
                           <td style={{ clor: "red" }}>{home.signGrade !== null ? home.signGrade.substr(1) : ""}</td>
                           : <td style={{ color: "black" }}>{home.signGrade !== null ? home.signGrade.substr(1) : ""}</td> }

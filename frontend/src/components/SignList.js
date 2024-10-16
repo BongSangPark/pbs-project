@@ -17,7 +17,6 @@ const SignList = () => {
   useEffect(() => {
     sgnRef.current[0].value = yyyymm;
     projectList();
-    signList();
     sgnRef.current[0].focus();
   }, []);
 
@@ -41,28 +40,6 @@ const SignList = () => {
       });
   };
 
-  const signList = () => {
-    let url =
-      "http://localhost/sign/list/" + sgnRef.current[0].value;
-
-    fetch(url)
-      .then((Res) => {
-        if (Res.status === 200) {
-          return Res.json();
-        } else if (Res.status === 204) {
-          setSign("");
-          alert("데이터가 존재하지 않습니다. 검수년월을 확인하세요!");
-          throw Error("데이터가 데이터가 존재하지 않습니다.");
-        }
-      })
-      .then((data) => {
-        setSign(data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  };
-
   const signLikeList = () => {
     let likeRef1 = sgnRef.current[0].value;
     let likeRef2 = sgnRef.current[1].value;
@@ -78,8 +55,8 @@ const SignList = () => {
           return Res.json();
         } else if (Res.status === 204) {
           setSign("");
-          alert("데이터가 존재하지 않습니다. 검수년월을 확인하세요!");
-          throw Error("데이터가 데이터가 존재하지 않습니다.");
+          alert("데이터가 존재하지 않습니다.\n검수년월을 확인하세요!");
+          sgnRef.current[0].focus();
         }
       })
       .then((data) => {
@@ -88,7 +65,6 @@ const SignList = () => {
       .catch((error) => {
         console.error(error.message);
       });
-
     sgnRef.current[0].focus();
   };
 

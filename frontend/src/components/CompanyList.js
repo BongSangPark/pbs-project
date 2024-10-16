@@ -11,27 +11,8 @@ const CompanyList = () => {
   let url = "http://localhost/company/list";
 
   useEffect(() => {
-    companyList(url);
     cmpRef.current.focus();
   }, []);
-
-  const companyList = (url) => {
-    fetch(url)
-      .then((Res) => {
-        if (Res.status === 200) {
-          return Res.json();
-        } else if (Res.status === 204) {
-          alert("데이터가 존재하지 않습니다.");
-          throw Error("데이터가 데이터가 존재하지 않습니다.");
-        }
-      })
-      .then((data) => {
-        setCompany(data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  };
 
   const companyLikeList = () => {
     url = "http://localhost/company/like?companyNm=" + cmpRef.current.value;

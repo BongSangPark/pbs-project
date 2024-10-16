@@ -11,28 +11,8 @@ const ProjectList = () => {
   let url = "http://localhost/project/list";
 
   useEffect(() => {
-    projectList(url);
     inputRef.current.focus();
   }, []);
-
-  const projectList = (url) => {
-    fetch(url)
-      .then((Res) => {
-        if (Res.status === 200) {
-          return Res.json();
-        } else if (Res.status === 204) {
-          setProject("");
-          alert("데이터가 존재하지 않습니다.");
-          throw Error("데이터가 데이터가 존재하지 않습니다.");
-        }
-      })
-      .then((data) => {
-        setProject(data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  };
 
   const projectLikeList = () => {
     url = "http://localhost/project/like?pjtNm=" + inputRef.current.value;

@@ -21,7 +21,6 @@ const ProjectMonitoring = () => {
     mntRef.current[0].value = yyyymm;
     projectList();
     companyList();
-    monitorProjectList();
     mntRef.current[0].focus();
   }, []);
 
@@ -99,8 +98,8 @@ const ProjectMonitoring = () => {
             return Res.json();
           } else if (Res.status === 204) {
             setMonitor("");
-            alert("monitorProjectList 데이터가 존재하지 않습니다. 검수기준월을 확인하세요!");
-            throw Error("데이터가 데이터가 존재하지 않습니다.");
+            alert("monitorProjectList 데이터가 존재하지 않습니다.\n검수기준월을 확인하세요!");
+            mntRef.current[0].focus();
           }
         })
         .then((data) => {

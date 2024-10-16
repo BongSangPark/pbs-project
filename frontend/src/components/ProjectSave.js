@@ -23,7 +23,8 @@ const ProjectSave = () => {
     pjtRef.current[0].focus();
   }, []);
 
-  const handleValueChange = (e) => {
+  const
+  handleValueChange = (e) => {
     setProject({
       ...project,
       [e.target.name]: e.target.value,
@@ -231,7 +232,7 @@ const ProjectSave = () => {
             >
               발주기관
             </th>
-            <td align="left" className="input-content" valign="middle">
+            <td align="left" className="input-Nm" valign="middle">
               <input
                 type="text"
                 name="orderOrg"

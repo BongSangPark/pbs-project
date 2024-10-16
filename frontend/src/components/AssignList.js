@@ -15,7 +15,6 @@ const AssignList = () => {
   useEffect(() => {
     asnRef.current[0].value = yyyymm;
     projectList();
-    assignList();
     asnRef.current[0].focus();
   }, []);
 
@@ -30,7 +29,7 @@ const AssignList = () => {
           return Res.json();
         } else if (Res.status === 204) {
           alert("데이터가 존재하지 않습니다.");
-          throw Error("데이터가 데이터가 존재하지 않습니다.");
+          asnRef.current[0].focus();
         }
       })
       .then((data) => {
@@ -39,28 +38,7 @@ const AssignList = () => {
       .catch((error) => {
         console.error(error.message);
       });
-  };
-
-  const assignList = () => {
-    let url =
-      "http://localhost/assign/list/" + asnRef.current[0].value;
-
-    fetch(url)
-      .then((Res) => {
-        if (Res.status === 200) {
-          return Res.json();
-        } else if (Res.status === 204) {
-          setAssign("");
-          alert("데이터가 존재하지 않습니다. 투입년월을 확인하세요!");
-          throw Error("데이터가 데이터가 존재하지 않습니다.");
-        }
-      })
-      .then((data) => {
-        setAssign(data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+      asnRef.current[0].focus();
   };
 
   const assignLikeList = () => {
@@ -78,7 +56,7 @@ const AssignList = () => {
           return Res.json();
         } else if (Res.status === 204) {
           setAssign("");
-          alert("데이터가 존재하지 않습니다.");
+          alert("데이터가 존재하지 않습니다.\n투입년월을 확인하세요!");
           throw Error("데이터가 데이터가 존재하지 않습니다.");
         }
       })

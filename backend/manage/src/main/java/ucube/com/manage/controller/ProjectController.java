@@ -47,8 +47,6 @@ public class ProjectController {
   // 한건 조회
   @GetMapping("/list/{pjtNo}")
   public ResponseEntity<?> findById(@PathVariable("pjtNo") String pjtNo) {
-    // return new ResponseEntity<>(projectService.projectQuery(pjtNo),
-    // HttpStatus.OK);
     Optional<Project> project = projectService.projectQuery(pjtNo);
 
     if (project.isPresent()) {

@@ -52,7 +52,8 @@ const AssignDetail = () => {
         }
       })
       .then((data) => {
-        setProject(data);
+        setProject
+        (data);
       })
       .catch((error) => {
         console.error(error.message);

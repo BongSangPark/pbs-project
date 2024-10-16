@@ -7,18 +7,15 @@ import reportWebVitals from "./reportWebVitals";
 import ReactQueryTest from "./ReactQueryTest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
-import UserProfile from "./UserProfile";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const queryClient = new QueryClient();
+const client = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-      {/* <QueryClientProvider client={queryClient}> */}
+  // <React.StrictMode>
+    {/* <QueryClientProvider client={client}> */}
         <App />
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-      {/* </QueryClientProvider> */}
-  </React.StrictMode>
+     {/* </QueryClientProvider> */}
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

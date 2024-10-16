@@ -2,20 +2,24 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Item from "../menu/Item";
 
-const ContractList = () => {
+const AssignList = () => {
   const [project, setProject] = useState();
-  const [contract, setContract] = useState([]);
-  const inputRef = useRef([]);
+  const [assign, setAssign] = useState([]);
+  const asnRef = useRef([]);
 
-  const text = "Home > BP사 계약관리 > 계약 조회";
-
-  let url = "http://localhost/contract/list";
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = (today.getMonth()).toString().padStart(2, '0');
+  const yyyymm = `${year}${month}`;
 
   useEffect(() => {
+    asnRef.current[0].value = yyyymm;
     projectList();
-    // contractList(url);
-    inputRef.current[0].focus();
+    // assignList();
+    asnRef.current[0].focus();
   }, []);
+
+  const text = "Home > 인력투입 관리 > 실투입 조회";
 
   const projectList = () => {
     let pjtUrl = "http://localhost/contract/projectList";
@@ -37,62 +41,76 @@ const ContractList = () => {
       });
   };
 
-  const contractList = (url) => {
+  const assignList = () => {
+    let url =
+      "http://localhost/assign/list/" + asnRef.current[0].value;
+
     fetch(url)
       .then((Res) => {
         if (Res.status === 200) {
           return Res.json();
         } else if (Res.status === 204) {
-          setContract("");
-          alert("데이터가 존재하지 않습니다.");
+          setAssign("");
+          alert("데이터가 존재하지 않습니다.\n투입년월을 확인하세요!");
           throw Error("데이터가 데이터가 존재하지 않습니다.");
         }
       })
       .then((data) => {
-        setContract(data);
+        setAssign(data);
       })
       .catch((error) => {
         console.error(error.message);
       });
   };
 
-  const contractLikeList = () => {
-    let likeRef1 = inputRef.current[0].value;
-    let likeRef2 = inputRef.current[1].value;
+  const assignLikeList = () => {
+    let likeRef1 = asnRef.current[0].value;
+    let likeRef2 = asnRef.current[1].value;
+    let likeRef3 = asnRef.current[2].value;
+    let likeRef4 = asnRef.current[3].value;
 
-    let baseurl = "http://localhost/contract/like";
-    let searchUrl = baseurl + "?pjtNo=" + likeRef1 + "&companyNm=" + likeRef2;
+    let baseurl = "http://localhost/assign/like";
+    let searchUrl = baseurl + "?assignMonth=" + likeRef1 + "&pjtNo=" + likeRef2 + "&companyNm=" + likeRef3 + "&bpPerson=" + likeRef4;
 
     fetch(searchUrl)
       .then((Res) => {
         if (Res.status === 200) {
           return Res.json();
         } else if (Res.status === 204) {
-          setContract("");
-          alert("데이터가 존재하지 않습니다.");
+          setAssign("");
+          alert("데이터가 존재하지 않습니다.\n투입년월을 확인하세요!");
           throw Error("데이터가 데이터가 존재하지 않습니다.");
         }
       })
       .then((data) => {
-        setContract(data);
+        setAssign(data);
       })
       .catch((error) => {
         console.error(error.message);
       });
 
-    inputRef.current[0].focus();
+    asnRef.current[0].focus();
   };
 
   return (
     <div className="container">
       <div><Item item={text} /></div>
       <hr />
+      <b>투입년월 :</b>
+      &nbsp;
+      <input
+        type="text"
+        maxLength="6"
+        style={{ width: "80px", fontSize: "90%", textAlign: "center" }}
+        ref={(el) => (asnRef.current[0] = el)}
+      />
+      &nbsp;
       <b>프로젝트 :</b>
       &nbsp;
       <select
         name="pjtNo"
-        ref={(el) => (inputRef.current[0] = el)}
-        style={{ width: "300px" }}
+        ref={(el) => (asnRef.current[1] = el)}
+        style={{ width: "200px" }}
         class="form-select-sm"
       >
         <option value="" defaultValue="프로젝트 선택">
@@ -111,19 +129,28 @@ const ContractList = () => {
       <input
         type="text"
         style={{ fontSize: "90%" }}
-        ref={(el) => (inputRef.current[1] = el)}
+        ref={(el) => (asnRef.current[2] = el)}
         placeholder="BP사 명을 입력하세요."
       ></input>
       &nbsp;
-      <button type="button" class="btn btn-primary btn-sm" onClick={contractLikeList}>
+      <b>투입인력 :</b>
+      &nbsp;
+      <input
+        type="text"
+        style={{ width: "80px", fontSize: "90%", textAlign: "center" }}
+        ref={(el) => (asnRef.current[3] = el)}
+        placeholder="투입인력을 입력하세요."
+      ></input>
+      &nbsp;
+      <button type="button" class="btn btn-primary btn-sm" onClick={assignLikeList}>
         조회
       </button>
       &nbsp;
-      <label>(프로젝트 NO를 클릭하여 상세내역을 확인하세요.)</label>
+      <label style={{ fontSize: "10pt"}}>(프로젝트 NO를 클릭하여 상세내역을...)</label>
       <label className="right-align">
-        <Link to="/contract/save">
-          <button type="button" class="btn btn-primary btn-sm" >
-            계약 등록
+        <Link to="/assign/save">
+          <button type="button" class="btn btn-primary btn-sm">
+            실투입 등록
           </button>
         </Link>
       </label>
@@ -131,32 +158,30 @@ const ContractList = () => {
       <table className="table" style={{ fontSize: "90%" }}>
         <thead>
           <tr align="center">
+            <th className="bg-secondary-subtle scope-col">투입년월</th>
             <th className="bg-secondary-subtle scope-col">프로젝트 No</th>
             <th className="bg-secondary-subtle scope-col">프로젝트 명</th>
             <th className="bg-secondary-subtle scope-col">사업자 등록번호</th>
             <th className="bg-secondary-subtle scope-col">BP사 명</th>
-            <th className="bg-secondary-subtle scope-col">대표자</th>
             <th className="bg-secondary-subtle scope-col">투입인력</th>
-            <th className="bg-secondary-subtle scope-col">계약금액</th>
+            <th className="bg-secondary-subtle scope-col">등급</th>
           </tr>
         </thead>
         <tbody align="center">
-          {contract &&
-            contract.map((contract, key) => (
-              <tr key={contract.contract_idx}>
+          {assign &&
+            assign.map((assign, key) => (
+              <tr key={assign.assign_idx}>
+                <td align="center">{assign.assignMonth}</td>
                 <td>
-                  <Link to={`/contract/list/${contract.contract_idx}`} style={{ color: "blue"}}>
-                    {contract.pjtNo.replace(/(\d{6})(\d{3})/, '$1-$2')}
+                  <Link to={`/assign/list/${assign.assign_idx}/${assign.assignMonth}/${assign.pjtNo}/${assign.companyNo}`} style={{ color: "blue"}}>
+                    {assign.pjtNo.replace(/(\d{6})(\d{3})/, '$1-$2')}
                   </Link>
                 </td>
-                <td align="left">{contract.pjtNm}</td>
-                <td>{contract.companyNo.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3')}</td>
-                <td align="left">{contract.companyNm}</td>
-                <td>{contract.leader}</td>
-                <td>{contract.bpPerson}</td>
-                <td align="right">
-                  {contract.sumPrice.toLocaleString("ko-KR")}
-                </td>
+                <td align="left">{assign.pjtNm}</td>
+                <td>{assign.companyNo.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3')}</td>
+                <td align="left">{assign.companyNm}</td>
+                <td>{assign.bpPerson}</td>
+                <td>{assign.grade.substr(1)}</td>
               </tr>
             ))}
         </tbody>
@@ -165,4 +190,4 @@ const ContractList = () => {
   );
 };
 
-export default ContractList;
+export default AssignList;
